@@ -1,6 +1,6 @@
 import pandas as pd
 from collections import defaultdict, Counter
-from scipy.spatial import distance
+import numpy as np
 
 
 class FasterKNNClassifier:
@@ -15,7 +15,7 @@ class FasterKNNClassifier:
         return tuple(quadrant)
 
     def _find_closest_quadrant(self, x) -> tuple:
-        return min(self._quadrant2class, key=lambda i: distance.cosine(self._find_quadrant(x), i))
+        return min(self._quadrant2class, key=lambda i: np.linalg.norm(np.array(self._find_quadrant(x)) - np.array(i)))
 
     def fit(self, X: pd.DataFrame, y: pd.Series):
         for i in X:
